@@ -102,3 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
+.idea
+package-lock.json
+blog-backend/package-lock.json
+blog-backend/dist
+blog-backend/.env
