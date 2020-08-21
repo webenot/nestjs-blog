@@ -12,12 +12,13 @@ import {
   Delete
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
-import { CreatePostDTO } from './dto/create-post.dto';
 import { ValidateObjectId } from '../shared/pipes/validate-object-id.pipes';
+import { ValidatePostContent } from '../shared/pipes/validate-post-content.pipes';
 
 @Controller('blog')
 export class BlogController {
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService) {
+  }
 
   @Get('posts')
   async getPosts(@Res() res) {
@@ -34,8 +35,21 @@ export class BlogController {
   }
 
   @Post('/post')
-  async addPost(@Res() res, @Body() createPostDTO: CreatePostDTO) {
-    const newPost = await this.blogService.addPost(createPostDTO);
+  async addPost(
+    @Res() res,
+    @Body('body', new ValidatePostContent()) content: string,
+    @Body('title') title: string,
+    @Body('description') description: string,
+    @Body('author') author: string,
+    @Body('date_posted') date_posted: string
+  ) {
+    const newPost = await this.blogService.addPost({
+      body: content,
+      title,
+      description,
+      author,
+      date_posted,
+    });
     return res.status(HttpStatus.OK).json({
       message: "Post has been submitted successfully!",
       post: newPost
@@ -46,9 +60,19 @@ export class BlogController {
   async editPost(
     @Res() res,
     @Query('postID', new ValidateObjectId()) postID,
-    @Body() createPostDTO: CreatePostDTO
+    @Body('body', new ValidatePostContent()) content: string,
+    @Body('title') title: string,
+    @Body('description') description: string,
+    @Body('author') author: string,
+    @Body('date_posted') date_posted: string
   ) {
-    const editedPost = await this.blogService.editPost(postID, createPostDTO);
+    const editedPost = await this.blogService.editPost(postID, {
+      body: content,
+      title,
+      description,
+      author,
+      date_posted,
+    });
     if (!editedPost) throw new NotFoundException('Post does not exist!');
     return res.status(HttpStatus.OK).json({
       message: 'Post has been successfully updated',

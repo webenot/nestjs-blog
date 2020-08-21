@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     editPost () {
-      let postData = {
+      const postData = {
         title: this.post.title,
         description: this.post.description,
         body: this.post.body,
@@ -68,7 +68,10 @@ export default {
     getPost () {
       axios
         .get(`${server.baseURL}/blog/post/${this.id}`)
-        .then(data => (this.post = data.data));
+        .then(data => {
+          this.post = data.data;
+          this.post.body = this.post.body.replace(/<\/p><p>/gi, '\n').replace(/<p>/gi, '').replace(/<\/p>/gi, '');
+        });
     },
     navigate () {
       router.go(-1);

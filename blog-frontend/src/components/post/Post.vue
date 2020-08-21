@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="container">
     <div class="col-sm-12">
       <h4 style="margin-top: 30px;"><small>
         <button class="btn btn-success" v-on:click="navigate()"> View All Posts</button>
@@ -7,7 +7,7 @@
       <hr>
       <h2>{{ post.title }}</h2>
       <h5><span class="glyphicon glyphicon-time"></span> Post by {{ post.author }}, {{ post.date_posted }}.</h5>
-      <p> {{ post.body }} </p>
+      <div class="text-left" v-html="post.body"></div>
     </div>
   </div>
 </template>
@@ -32,7 +32,10 @@ export default {
     getPost () {
       axios
         .get(`${server.baseURL}/blog/post/${this.id}`)
-        .then(data => (this.post = data.data));
+        .then(data => {
+          this.post = data.data;
+          console.log(this.post.body);
+        });
     },
     navigate () {
       router.go(-1);

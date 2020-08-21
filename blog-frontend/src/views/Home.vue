@@ -12,7 +12,7 @@
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <h2 class="card-img-top">{{ post.title }}</h2>
-            <p class="card-text">{{ post.body }}</p>
+            <div class="card-text text-left" v-html="post.body.substring(0, 150) + '...'"></div>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group" style="margin-bottom: 20px;">
                 <router-link :to="{name: 'Post', params: {id: post._id}}" class="btn btn-sm btn-outline-secondary">View

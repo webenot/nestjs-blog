@@ -7,10 +7,6 @@ import PostComponent from '@/components/post/Post';
 const routes = [
   {
     path: '/',
-    redirect: { name: 'home' },
-  },
-  {
-    path: '/home',
     name: 'home',
     component: HomeComponent,
   },
